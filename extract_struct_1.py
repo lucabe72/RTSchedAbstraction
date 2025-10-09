@@ -1,6 +1,5 @@
-from clang.cindex import Index, CursorKind, Config
 import sys
-import os
+from clang.cindex import Index, CursorKind
 
 def extract_structure(input_file, struct_name):
     index = Index.create()
@@ -35,4 +34,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
