@@ -1,12 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#define randomized_struct_fields_start
-#define randomized_struct_fields_end
-#define __rcu
-#define __user
-#define ____cacheline_aligned
-#define __randomize_layout
+#include "stub/compiler_attributes.h"
 
 #define NR_CPUS 16			// FIXME!
 #define ENQUEUE_WAKEUP          0x01	// FIXME!

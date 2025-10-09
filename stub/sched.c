@@ -6,22 +6,15 @@ static inline unsigned int smp_processor_id(void)
   return _this_cpu;
 }
 
-#define randomized_struct_fields_start
-#define randomized_struct_fields_end
-#define __randomize_layout
-#define __rcu
-#define __user
-#define likely(x) (x) 
-#define unlikely(x) (x) 
+#include "compiler_attributes.h"
+
 #define atomic_read(x) *(x) 
 #define atomic_read_acquire(x) *(x) 
-#define ____cacheline_aligned
 #define smp_rmb()
 #define smp_wmb()
 #define READ_ONCE(a) (a)
 #define rcu_read_lock()
 #define rcu_read_unlock()
-#define __init
 //All scheduling features disabled... FIXME: should we improve this?
 #define sched_feat(x) 0
 //No NUMA
