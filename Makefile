@@ -1,10 +1,10 @@
 CPPFLAGS=-Isrc
 
 all: test
-test: stub/sched.o main.o
-	$(CC) main.o stub/sched.o -o test
+test: stub/sched.o main.o my_alloc.o
+	$(CC) main.o stub/sched.o my_alloc.o -o test
 
 clean:
-	rm -f main.o test stub/sched.o
+	rm -f main.o test stub/sched.o my_alloc.o
 allclean: clean
 	rm -rf tmp src

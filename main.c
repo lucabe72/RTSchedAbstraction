@@ -1,5 +1,6 @@
 #include <stdio.h>
-#include <string.h>
+
+#include "my_alloc.h"
 
 #include "stub/compiler_attributes.h"
 
@@ -28,7 +29,6 @@
 extern struct sched_class rt_sched_class;
 void init_sched_rt_class(void);
 void init_rt_rq(struct rt_rq *rt_rq);
-void *malloc(size_t size);			// cannot include stdlib.h
 
 struct cpumask __cpu_online_mask;
 struct cpumask __cpu_possible_mask;
@@ -37,8 +37,7 @@ void add_task(struct rq *rq)
 {
   struct task_struct *t;
 
-  t = malloc(sizeof(struct task_struct));
-  memset(t, sizeof(struct task_struct), 0);
+  t = my_alloc(sizeof(struct task_struct));
   rt_sched_class.enqueue_task(rq, t, ENQUEUE_WAKEUP);
 }
 
@@ -61,8 +60,7 @@ int main()
   __cpu_possible_mask.bits[0] = 0xf;
   init_sched_rt_class();
   for (i = 0; i < 4; i++) {
-    rq[i] = malloc(sizeof(struct rq));
-    memset(rq[i], sizeof(struct rq), 0);
+    rq[i] = my_alloc(sizeof(struct rq));
     init_rt_rq(&rq[i]->rt);
   }
 
