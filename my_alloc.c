@@ -28,7 +28,7 @@ void *my_alloc(unsigned int size)
   void *p;
 
   p = malloc(size);
-  memset(p, size, 0);
+  memset(p, 0, size);
 
   return p;
 }
