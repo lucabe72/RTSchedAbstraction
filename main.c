@@ -41,6 +41,7 @@ void add_task(struct rq *rq)
   struct task_struct *t;
 
   t = my_alloc(sizeof(struct task_struct));
+  printf("Adding %p %d to %p %d\n", t, t->pid, rq, rq->cpu);
   rt_sched_class.enqueue_task(rq, t, ENQUEUE_WAKEUP);
 }
 
@@ -88,6 +89,7 @@ int main()
     struct rq *rq;
 
     rq = &runqueues[i]; //FIXME: should use cpu_rq(i)
+    rq->cpu = i;
     init_rt_rq(&rq->rt);
     rq->rd = rd;
     //TODO: Initialize the rq structure, to avoid asserts and crashes!
