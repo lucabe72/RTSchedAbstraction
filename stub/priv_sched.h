@@ -9,7 +9,7 @@
 
 
 //FIXME: real per-cpu thing!
-struct rq runqueues[NR_CPUS];
+extern struct rq runqueues[NR_CPUS];
 //#define cpu_rq(cpu)             (&per_cpu(runqueues, (cpu)))
 #define cpu_rq(cpu)             (&runqueues[cpu])
 #define this_rq()               this_cpu_ptr(&runqueues)

@@ -23,8 +23,11 @@
 #include "pid_types.h"
 #include "task.h"
 #include "rt_rq.h"
+#include "root_domain.h"
 #include "rq.h"
 #include "sched_class.h"
+
+struct rq runqueues[NR_CPUS];
 
 extern struct sched_class rt_sched_class;
 void init_sched_rt_class(void);
@@ -41,6 +44,24 @@ void add_task(struct rq *rq)
   rt_sched_class.enqueue_task(rq, t, ENQUEUE_WAKEUP);
 }
 
+struct root_domain *create_root_domain(unsigned int num_rqs)
+{
+  struct root_domain *rd;
+  unsigned int i;
+
+  rd = my_alloc(sizeof(struct root_domain));
+  rd->refcount = num_rqs;
+  for (i = 0; i < num_rqs; i++) {
+    //cpumask_set_cpu(i, &rd->span);
+    //cpumask_set_cpu(i, &rd->online);
+    rd->span->bits[0] = 0xf;
+    rd->online->bits[0] = 0xf;
+  }
+  rd->rto_cpu = -1;
+
+  return rd;
+}
+
 void do_schedule(struct rq *rq)
 {
   struct task_struct *exec;
@@ -48,29 +69,37 @@ void do_schedule(struct rq *rq)
   exec = rt_sched_class.pick_task(rq);
   if (exec) {
     printf("Task %d scheduled on CPU %d\n", exec->pid, rq->cpu);
+  } else {
+    printf("No task scheduled on CPU %d\n", rq->cpu);
   }
 }
 
 int main()
 {
-  struct rq *rq[4];
   unsigned int i;
+  struct root_domain *rd;
 
   __cpu_online_mask.bits[0] = 0xf;
   __cpu_possible_mask.bits[0] = 0xf;
   init_sched_rt_class();
+  rd = create_root_domain(4);
+
   for (i = 0; i < 4; i++) {
-    rq[i] = my_alloc(sizeof(struct rq));
-    init_rt_rq(&rq[i]->rt);
+    struct rq *rq;
+
+    rq = &runqueues[i]; //FIXME: should use cpu_rq(i)
+    init_rt_rq(&rq->rt);
+    rq->rd = rd;
+    //TODO: Initialize the rq structure, to avoid asserts and crashes!
   }
 
-  add_task(rq[0]);
-  add_task(rq[0]);
+  add_task(&runqueues[0]);
+  add_task(&runqueues[0]);
  
-  do_schedule(rq[0]);
-  do_schedule(rq[1]);
-  do_schedule(rq[2]);
-  do_schedule(rq[3]);
+  do_schedule(&runqueues[0]);
+  do_schedule(&runqueues[1]);
+  do_schedule(&runqueues[2]);
+  do_schedule(&runqueues[3]);
 
   return 0;
 }
