@@ -1,11 +1,14 @@
 CPPFLAGS=-Isrc
+MOPSAFLAGS=-make-target=test -stub-ignore-case=malloc.failure -config=c/cell-string-length-itv.json -loop-unrolling=4 -loop-unrolling-at=string.c:99:800 -stub-use-forall-loop-evaluation
 
 all: test
 test: stub/sched.o main.o my_alloc.o
 	$(CC) $(LDFLAGS) main.o stub/sched.o my_alloc.o -o test
 
 mopsa: mopsa.db
-	mopsa-c mopsa.db -make-target=test -stub-ignore-case=malloc.failure -config=c/cell-string-length-itv.json -loop-unrolling=4 -loop-unrolling-at=string.c:99:800 -stub-use-forall-loop-evaluation
+	mopsa-c mopsa.db $(MOPSAFLAGS)
+mopsa.txt: mopsa.db
+	mopsa-c mopsa.db $(MOPSAFLAGS) -no-color > mopsa.txt
 
 mopsa.db:
 	mopsa-build make
