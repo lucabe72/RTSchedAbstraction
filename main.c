@@ -39,9 +39,12 @@ struct cpumask __cpu_possible_mask;
 void add_task(struct rq *rq)
 {
   struct task_struct *t;
+  static unsigned int id = 1;
 
   t = my_alloc(sizeof(struct task_struct));
-  printf("Adding %p %d to %p %d\n", t, t->pid, rq, rq->cpu);
+  t->pid = id++;
+  t->prio = 20 - t->pid;
+  printf("Adding %p %d (prio %d) to %p %d\n", t, t->pid, t->prio, rq, rq->cpu);
   rt_sched_class.enqueue_task(rq, t, ENQUEUE_WAKEUP);
 }
 
