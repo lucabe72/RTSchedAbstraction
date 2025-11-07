@@ -131,6 +131,6 @@ static inline void cpumask_copy(struct cpumask *dstp, const struct cpumask *srcp
 #define for_each_cpu(cpu, mask)                         \
         for_each_set_bit(cpu, cpumask_bits(mask), NR_CPUS)
 
-#define for_each_possible_cpu(cpu) for_each_cpu((cpu), cpu_possible_mask)
-
+//#define for_each_possible_cpu(cpu) for_each_cpu((cpu), cpu_possible_mask)
+#define for_each_possible_cpu(cpu) for(cpu = 0; cpu < NR_CPUS; cpu++)
 
