@@ -78,6 +78,38 @@ void do_schedule(struct rq *rq)
   }
 }
 
+void my_rq_init(struct rq *rq, unsigned int i, struct root_domain *rd)
+{
+  rq->nr_running   = 0;
+  rq->ttwu_pending = 0;
+  rq->nr_switches  = 0;
+
+  /* initialize rq->rt.prio_array */
+  rq->rt.active.bitmap[0] = 0;
+  rq->rt.active.bitmap[1] = 0;
+
+  rq->rt.rt_nr_running     = 0;
+  rq->rt.rr_nr_running     = 0;
+  rq->rt.highest_prio.curr = 0;
+  rq->rt.highest_prio.next = 0;
+  rq->rt.overloaded        = 0;
+  /* initialize rq->rt.plist_head */
+  rq->rt.rt_queued         = 0;
+
+  rq->nr_uninterruptible = 0;
+  rq->dl_server    = NULL;
+  rq->idle         = NULL;
+  rq->stop         = NULL;
+  rq->next_balance = 0;
+  rq->prev_mm      = NULL;
+  /* ... */
+
+  rq->cpu = i;
+  init_rt_rq(&rq->rt);
+  rq->rd = rd;
+  //TODO: Maybe finish to initialize the rq structure, to avoid asserts and crashes!
+}
+
 int main()
 {
   unsigned int i;
@@ -91,11 +123,9 @@ int main()
   for (i = 0; i < 4; i++) {
     struct rq *rq;
 
+
     rq = &runqueues[i]; //FIXME: should use cpu_rq(i)
-    rq->cpu = i;
-    init_rt_rq(&rq->rt);
-    rq->rd = rd;
-    //TODO: Initialize the rq structure, to avoid asserts and crashes!
+    my_rq_init(rq, i, rd);
   }
 
   add_task(&runqueues[0]);
