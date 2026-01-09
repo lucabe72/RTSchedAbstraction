@@ -7,6 +7,8 @@ CPPFLAGS=-I..
 
 all: test
 
+test: test.o ../my_alloc.o random_bool.o
+
 mopsa: mopsa.db
 	mopsa-c mopsa.db $(MOPSAFLAGS)
 mopsa.txt: mopsa.db
@@ -17,4 +19,5 @@ mopsa.db:
 
 clean:
 	rm -f test
+	rm -f *.o
 	rm -f mopsa.db 
