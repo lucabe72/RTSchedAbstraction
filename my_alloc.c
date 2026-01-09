@@ -32,4 +32,9 @@ void *my_alloc(unsigned int size)
 
   return p;
 }
+
+void my_free(void *p)
+{
+  free(p);
+}
 #endif
