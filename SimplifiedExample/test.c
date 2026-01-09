@@ -3,8 +3,7 @@
 #include <stdbool.h>
 #include <assert.h>
 
-#include "random_bool.h"
-#include "my_alloc.h"
+#include "my_funcs.h"
 #include "src/container_of.h"
 #include "stub/list.h"
 

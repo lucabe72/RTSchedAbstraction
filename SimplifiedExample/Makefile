@@ -1,4 +1,4 @@
-MOPSAFLAGS=-make-target=test -stub-ignore-case=malloc.failure -config=c/cell-string-length-pack-rel-itv-congr.json -loop-unrolling=4 -loop-unrolling-at=string.c:99:800 -stub-use-forall-loop-evaluation
+MOPSAFLAGS=-make-target=test -stub-ignore-case=malloc.failure -config=c/cell-string-length-pack-rel-itv-congr.json
 
 CFLAGS+=-Wall -Wextra -g
 CFLAGS+=-fsanitize=address
@@ -7,7 +7,7 @@ CPPFLAGS=-I..
 
 all: test
 
-test: test.o ../my_alloc.o random_bool.o
+test: test.o my_funcs.o
 
 mopsa: mopsa.db
 	mopsa-c mopsa.db $(MOPSAFLAGS)
