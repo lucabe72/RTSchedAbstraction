@@ -64,7 +64,7 @@ int main()
 	fflush(stdout);
       }
     }
-    stop = random_bool(0.001);
+    stop = random_bool(0.00001);
   }
 #endif
 
