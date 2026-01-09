@@ -15,6 +15,7 @@ mopsa.txt: mopsa.db
 	mopsa-c mopsa.db $(MOPSAFLAGS) -no-color > mopsa.txt
 
 mopsa.db:
+	make clean
 	mopsa-build make
 
 clean:
