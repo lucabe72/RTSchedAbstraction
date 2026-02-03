@@ -1,4 +1,4 @@
-MOPSAFLAGS=-make-target=test -stub-ignore-case=malloc.failure -config=c/tail-cell-itv.json -loop-full-unrolling-at=test.c:47 -stub-alloc-pol=range_control -marker=if -tail-markers=6
+MOPSAFLAGS=-make-target=test -stub-ignore-case=malloc.failure -config=c/tail-cell-itv.json -loop-full-unrolling-at=test.c:47 -stub-alloc-pol=range_control -marker=if -tail-markers=14
 
 CFLAGS+=-Wall -Wextra -g
 CFLAGS+=-fsanitize=address
