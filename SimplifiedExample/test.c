@@ -18,7 +18,7 @@ void task_init(struct task *t, int pid)
 int main()
 {
   struct ready_list my_list;
-  bool stop;
+  int stop;
   unsigned int cnt;
   struct task *t;
 
@@ -42,9 +42,9 @@ int main()
     t = ready_list_get(&my_list);
   }
 #else
-  stop = false;
+  stop = 0;
   cnt = 0;
-  while (!stop) {
+  while (stop < 8) {
     bool insert;
 
     insert = random_bool(0.5);
@@ -60,13 +60,26 @@ int main()
         fflush(stdout);
         my_free(t);
       } else {
-	printf("Empty!\n");
-	fflush(stdout);
+        printf("Empty!\n");
+        fflush(stdout);
       }
     }
-    stop = random_bool(0.00001);
+    stop++;
   }
 #endif
 
   return 0;
 }
+/*
+  stop Limit | Tail markers required | Analysis time
+  5          | 6                     | 3s
+  6          | 10                    | 9s
+  7          | 10                    | 19s
+  8          | 14                    | 98s
+  9          | 14                    | 293s
+
+  10         | 18                    | 12s
+  12         | 22                    | 97s
+
+*/
+
